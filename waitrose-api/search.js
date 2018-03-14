@@ -1,3 +1,7 @@
+'use strict'
+
+const product = require('./product')
+
 module.exports = function search (jwtString, orderId, searchTerm) {
     const http = require('https');
   
@@ -25,14 +29,18 @@ module.exports = function search (jwtString, orderId, searchTerm) {
     };
   
     const req = http.request(options, (res) => {
+        let body = ''
       console.log(`STATUS: ${res.statusCode}`);
       console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
       res.setEncoding('utf8');
       res.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`);
+        body += chunk
       });
       res.on('end', () => {
         console.log('No more data in response.');
+        const productId = JSON.parse("" + body).componentsAndProducts[0].searchProduct.id;
+        console.log("productID :" + productId)
+        product(jwtString, orderId, productId);
       });
     });
     
