@@ -1,0 +1,8 @@
+{
+  "name": "gangs-of-new-pork",
+  "version": "0.1",
+  "main": "index.js",
+  "repository": "https://github.com/nickmeldrum/gangs-of-new-pork.git",
+  "author": "Nick Meldrum <nick@nickmeldrum.com>",
+  "license": "ISC"
+}

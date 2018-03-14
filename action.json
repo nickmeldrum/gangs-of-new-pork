@@ -1,0 +1,26 @@
+{
+  "actions": [
+    {
+      "description": "Default Welcome Intent",
+      "name": "MAIN",
+      "fulfillment": {
+        "conversationName": "Waitrose"
+      },
+      "intent": {
+        "name": "actions.intent.MAIN",
+        "trigger": {
+          "queryPatterns": [
+            "talk to <INSERT YOUR NAME HERE>"
+          ]
+        }
+      }
+    }
+  ],
+  "conversations": {
+    "waitroseApp": {
+      "name": "waitroseApp",
+      "url": "https://us-central1-gangs-of-new-pork.cloudfunctions.net/gangsOfNewPork"
+    }
+  },
+  "locale": "en"
+}
