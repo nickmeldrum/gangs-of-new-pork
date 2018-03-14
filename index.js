@@ -1,4 +1,4 @@
-exports.gangsOfNewPork = (req, res) => {
+exports.team3hackathon = (req, res) => {
   res.setHeader('Content-Type', 'application/json')
   res.append('Google-Assistant-API-Version', 'v1')
 
