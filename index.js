@@ -1,9 +1,15 @@
-exports.team3hackathon = (req, res) => {
-  res.setHeader('Content-Type', 'application/json')
-  res.append('Google-Assistant-API-Version', 'v1')
+/*
+* HTTP Cloud Function.
+*
+* @param {Object} req Cloud Function request context.
+* @param {Object} res Cloud Function response context.
+*/
+exports.team3hackathon = function team3hackathon (req, res) {
+  response = "This is a sample response from your webhook!" //Default response from the webhook to show it's working
 
-  const userInput = req.body.inputs[0].raw_inputs[0].query
 
-  res.json(['Welcome to gangs of new pork waitrose!'])
-  res.status(200).end()
-}
+  res.setHeader('Content-Type', 'application/json'); //Requires application/json MIME type
+  res.send(JSON.stringify({ "speech": response, "displayText": response 
+  //"speech" is the spoken version of the response, "displayText" is the visual version
+  }));
+};
