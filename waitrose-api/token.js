@@ -5,4 +5,4 @@ module.exports = () => {
     path: '/api/authentication-prod/v2/authentication/token',
     method: 'GET',
   })
-})
+}
