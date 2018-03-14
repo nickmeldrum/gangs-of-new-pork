@@ -30,6 +30,7 @@ module.exports = function trolley(jwtString, orderId, productId) {
         body += chunk
       });
       res.on('end', () => {
+          console.log("trolley response ", body)
         console.log('No more data in response.');
       });
     });
