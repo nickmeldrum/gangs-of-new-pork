@@ -13,3 +13,13 @@ exports.team3hackathon = function team3hackathon (req, res) {
   //"speech" is the spoken version of the response, "displayText" is the visual version
   }));
 };
+
+const waitroseApi = require('./waitrose-api')
+
+const main = () => {
+  const searchTerm = process.argv[2];
+
+  waitroseApi.token(searchTerm);
+};
+
+main();
