@@ -67,7 +67,7 @@ function saveallergyindicator(req, res) {
       speech: response,
       displayText: response,
       //"speech" is the spoken version of the response, "displayText" is the visual version
-    }),
+    })
   )
 }
 
@@ -82,6 +82,6 @@ function resetindicator(req, res) {
       speech: response,
       displayText: response,
       //"speech" is the spoken version of the response, "displayText" is the visual version
-    }),
+    })
   )
 }
