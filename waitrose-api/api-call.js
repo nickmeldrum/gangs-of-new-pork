@@ -1,8 +1,9 @@
 const http = require('https')
 
-module.exports = options => {
-  if (options.body) options.bodyString = JSON.stringify(options.body)
+let cookieHeader = ''
+let jwt = ''
 
+module.exports = options => {
   const opts = {
     host: 'www.waitrose.com',
     path: options.path,
@@ -12,11 +13,31 @@ module.exports = options => {
     }, 
   }
 
-  if (options.body) opts.headers['Content-Length'] = Buffer.byteLength(options.bodyString)
+  if (options.body) {
+    options.bodyString = JSON.stringify(options.body)
+    opts.headers['Content-Length'] = Buffer.byteLength(options.bodyString)
+  }
+
+  if (options.sendCookies && cookieHeader) {
+    opts.headers['Cookie'] = cookieHeader
+  }
+
+  if (options.sendJwt && jwt) {
+    opts.headers['Authorisation'] = jwt
+  }
 
   return new Promise((resolve, reject) => {
     const req = http.request(opts, res => {
       let body = ''
+
+      const setCookie = res.headers["set-cookie"]
+      if (setCookie) {
+        cookieHeader = setCookie
+          .filter(cookie => !!cookie)
+          .map(cookie => cookie.split(';')[0])
+          .join(';')
+      }
+
       res.setEncoding('utf8')
       res.on('readable', function() { body += this.read() || ''})
       res.on('end', () => {
@@ -29,7 +50,9 @@ module.exports = options => {
     })
 
     req.on('error', e => reject(e))
-    if (options.body) req.write(options.bodyString)
+    if (options.body) {
+      req.write(options.bodyString)
+    }
     req.end()
   })
 }
