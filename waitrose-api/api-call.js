@@ -1,3 +1,5 @@
+'use strict'
+
 const http = require('https')
 
 let cookieHeader = ''

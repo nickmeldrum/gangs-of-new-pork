@@ -1,3 +1,5 @@
+'use strict'
+
 const apiCall = require('./api-call')
 
 module.exports = () => {

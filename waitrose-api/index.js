@@ -1,3 +1,5 @@
+'use strict'
+
 const product = require('./product')
 const search = require('./search')
 const token = require('./token')
