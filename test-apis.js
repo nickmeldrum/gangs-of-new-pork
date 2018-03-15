@@ -13,10 +13,11 @@ waitroseApi.login()
   .then(waitroseApi.token)
   .then(data => {
     tokenObject = data.loginResult
-    return waitroseApi.search(data.loginResult.customerId, data.loginResult.orderId, 'bread')
+    return waitroseApi.search(data.loginResult.customerId, data.loginResult.orderId, searchTerm)
   })
+  .then(data => waitroseApi.product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id))
   .then(data => {
-    return waitroseApi.product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id)
+    console.log('product adding:', data)
+    return waitroseApi.trolley(tokenObject.orderId, data.products[0].id)
   })
-  .then(console.log)
   .catch(err => console.error('ack ERROR!', err))

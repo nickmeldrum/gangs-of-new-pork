@@ -8,7 +8,7 @@ module.exports = (orderId, productId) =>
     method: 'POST',
     sendCookies: true,
     body: {
-      productId: productId.toString(),
+      productId,
       quantity: { amount: 1, uom: 'C62' },
       canSubstitute: true,
     },
