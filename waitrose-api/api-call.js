@@ -30,6 +30,7 @@ exports.call = options => {
     opts.headers['Content-Length'] = Buffer.byteLength(options.bodyString)
   }
 
+  log('NICK', cookieHeader, options)
   if (options.sendCookies && cookieHeader) {
     opts.headers['Cookie'] = cookieHeader
   }
@@ -44,7 +45,7 @@ exports.call = options => {
       let body = ''
 
       const setCookie = res.headers['set-cookie']
-      if (setCookie) {
+      if (options.saveCookies && setCookie) {
         cookieHeader = setCookie
           .filter(cookie => !!cookie)
           .map(cookie => cookie.split(';')[0])
@@ -64,6 +65,8 @@ exports.call = options => {
         }
       })
     })
+
+    log(req)
 
     req.on('error', e => {
       log('ack request error', e)

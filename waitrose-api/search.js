@@ -5,6 +5,7 @@ const api = require('./api-call')
 module.exports = (orderId, searchTerm) =>
   api.call({
     path: '/api/content-prod/v2/cms/publish/productcontent/search/-1?clientType=WEB_APP',
+    sendCookies: true,
     method: 'POST',
     body: {
       customerSearchRequest: {
