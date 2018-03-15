@@ -2,8 +2,8 @@
 
 const api = require('./api-call')
 
-module.exports = (orderId, productId) =>
+module.exports = (customerId, orderId, productId) =>
   api.call({
-    path: `/custsearch-prod/v3/search/-1/${productId}?orderId=${orderId}`,
+    path: `/custsearch-prod/v3/search/${customerId}/${productId}?orderId=${orderId}`,
     method: 'GET',
   })

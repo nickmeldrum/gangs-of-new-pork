@@ -35,7 +35,7 @@ exports.call = options => {
   }
 
   if (jwt) {
-    opts.headers['authorisation'] = jwt
+    opts.headers['Authorization'] = jwt
   }
 
   return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ exports.call = options => {
         body += this.read() || ''
       })
       res.on('end', () => {
-        log('request complete:', res.statusCode, body, res)
+        log('request complete:', res.statusCode)
         if (res.statusCode > 399) reject(res.statusCode)
         else {
           if (body.length) resolve(JSON.parse(body))
@@ -71,11 +71,7 @@ exports.call = options => {
 
     if (options.body) {
       req.write(options.bodyString)
-
-      log('NICK body', options.bodyString)
-      log('NICK REQ', req)
     }
-
 
     req.end()
   })
