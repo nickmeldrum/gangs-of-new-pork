@@ -1,9 +1,9 @@
 'use strict'
 
-const apiCall = require('./api-call')
+const api = require('./api-call')
 
 module.exports = () =>
-  apiCall({
+  api.call({
     path: '/api/authentication-prod/v2/authentication/login',
     method: 'POST',
     body: {

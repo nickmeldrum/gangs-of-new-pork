@@ -1,11 +1,21 @@
 'use strict'
 
 const http = require('https')
+const config = require('./config')
 
 let cookieHeader = ''
 let jwt = ''
 
-module.exports = options => {
+const log = function() {
+  if (config.debugMode()) {
+    console.log(...arguments)
+  }
+}
+
+exports.storeToken = token => (jwt = token)
+
+exports.call = options => {
+  log('making call', options.path)
   const opts = {
     host: 'www.waitrose.com',
     path: options.path,
@@ -24,7 +34,8 @@ module.exports = options => {
     opts.headers['Cookie'] = cookieHeader
   }
 
-  if (options.sendJwt && jwt) {
+  if (jwt) {
+    log('auth added', jwt)
     opts.headers['Authorisation'] = jwt
   }
 
@@ -45,6 +56,7 @@ module.exports = options => {
         body += this.read() || ''
       })
       res.on('end', () => {
+        log('request complete:', res.statusCode, body)
         if (res.statusCode > 399) reject(res.statusCode)
         else {
           if (body.length) resolve(JSON.parse(body))
@@ -53,7 +65,11 @@ module.exports = options => {
       })
     })
 
-    req.on('error', e => reject(e))
+    req.on('error', e => {
+      log('ack request error', e)
+      reject(e)
+    })
+
     if (options.body) {
       req.write(options.bodyString)
     }

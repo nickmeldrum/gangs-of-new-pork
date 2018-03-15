@@ -1,10 +1,9 @@
 'use strict'
 
-const apiCall = require('./api-call')
+const api = require('./api-call')
 
 module.exports = (orderId, productId) =>
-  apiCall({
+  api.call({
     path: `/api/custsearch-prod/v3/search/-1/${productId}?orderId=${orderId}`,
     method: 'GET',
-    sendJwt: true,
   })

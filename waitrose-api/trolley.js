@@ -1,12 +1,11 @@
 'use strict'
 
-const apiCall = require('./api-call')
+const api = require('./api-call')
 
 module.exports = (orderId, productId) =>
-  apiCall({
+  api.call({
     path: `/api/orderitems-prod/v4/orders/${orderId}/trolley/items`,
     method: 'POST',
-    sendJwt: true,
     body: {
       productId: productId.toString(),
       quantity: { amount: 1, uom: 'C62' },
