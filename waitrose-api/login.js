@@ -2,8 +2,8 @@
 
 const apiCall = require('./api-call')
 
-module.exports = () => {
-  return apiCall({
+module.exports = () =>
+  apiCall({
     path: '/api/authentication-prod/v2/authentication/login',
     method: 'POST',
     body: {
@@ -11,4 +11,3 @@ module.exports = () => {
       password: 'Password1',
     },
   })
-}
