@@ -20,6 +20,21 @@ const getProduct = searchTerm => login()
   })
   .then(data => product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id))
 
+const getAllergyFreeProduct = (searchTerm, filter) => login()
+  .then(token)
+  .then(data => {
+    tokenObject = data.loginResult
+    return searchFiltered(data.loginResult.customerId, data.loginResult.orderId, searchTerm, filter)
+  })
+  .then(data => product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id))
+
+const addToTrolley = productId => login()
+  .then(token)
+  .then(data => {
+    tokenObject = data.loginResult
+    return trolley(data.loginResult.orderId, productId)
+  })
+
 module.exports = {
   product,
   search,
@@ -30,4 +45,6 @@ module.exports = {
   getProduct,
   searchFiltered,
   emptyTrolley,
+  getAllergyFreeProduct,
+  addToTrolley
 }
