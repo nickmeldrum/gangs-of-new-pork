@@ -45,7 +45,7 @@ exports.call = options => {
       const setCookie = res.headers['set-cookie']
       if (options.saveCookies && setCookie) {
         cookieHeader = setCookie
-          .filter(cookie => !!cookie)
+          .filter(cookie => Boolean(cookie))
           .map(cookie => cookie.split(';')[0])
           .join(';')
       }
