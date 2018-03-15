@@ -9,6 +9,6 @@ module.exports = () => {
     body: {
       email: 'test@nickmeldrum.com',
       password: 'Password1',
-    }
+    },
   })
 }

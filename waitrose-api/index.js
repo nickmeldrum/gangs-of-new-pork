@@ -7,5 +7,9 @@ const trolley = require('./trolley')
 const login = require('./login')
 
 module.exports = {
-    product, search, token, trolley, login
-};
+  product,
+  search,
+  token,
+  trolley,
+  login,
+}

@@ -12,7 +12,7 @@ module.exports = options => {
     method: options.method,
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   }
 
   if (options.body) {
@@ -32,7 +32,7 @@ module.exports = options => {
     const req = http.request(opts, res => {
       let body = ''
 
-      const setCookie = res.headers["set-cookie"]
+      const setCookie = res.headers['set-cookie']
       if (setCookie) {
         cookieHeader = setCookie
           .filter(cookie => !!cookie)
@@ -41,7 +41,9 @@ module.exports = options => {
       }
 
       res.setEncoding('utf8')
-      res.on('readable', function() { body += this.read() || ''})
+      res.on('readable', function() {
+        body += this.read() || ''
+      })
       res.on('end', () => {
         if (res.statusCode > 399) reject(res.statusCode)
         else {
