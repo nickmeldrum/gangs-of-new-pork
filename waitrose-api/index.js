@@ -7,6 +7,16 @@ const trolley = require('./trolley')
 const login = require('./login')
 const config = require('./config')
 
+let tokenObject = {}
+
+const getProduct = searchTerm => login()
+  .then(token)
+  .then(data => {
+    tokenObject = data.loginResult
+    return search(data.loginResult.customerId, data.loginResult.orderId, searchTerm)
+  })
+  .then(data => product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id))
+
 module.exports = {
   product,
   search,
@@ -14,4 +24,5 @@ module.exports = {
   trolley,
   login,
   config,
+  getProduct,
 }

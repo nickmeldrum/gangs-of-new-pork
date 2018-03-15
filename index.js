@@ -1,7 +1,9 @@
 'use strict'
 
+const waitroseApi = require('./waitrose-api')
+
 const productAllergies = ['bread', 'milk']
-var userallergy
+let userAllergy = ''
 
 exports.team3hackathon = function team3hackathon(req, res) {
   let addToTrolleyIndicator = req.body.result.parameters['addToTrolley']
@@ -17,48 +19,42 @@ exports.team3hackathon = function team3hackathon(req, res) {
   }
 }
 
+const sendResponse = response => {
+  res.setHeader('Content-Type', 'application/json')
+  res.send(JSON.stringify({ speech: response, displayText: response }))
+}
+
 function addToTrolley(req, res) {
-  let product = req.body.result.parameters['Product']
+  const product = req.body.result.parameters['Product']
 
-  let allergyInd = false
-  let tmpProduct
+  if (!product) return sendResponse('Sorry, what product?')
+  if (product.length > 1) return sendResponse('Sorry we can only deal with 1 product right now')
+  if (!userAllergy) return sendResponse('Sorry, we do not know your allergy information yet')
 
-  if (product != undefined) {
-    for (i = 0; i < product.length; i++) {
-      tmpProduct = product[i]
-      if (productAllergies.includes(tmpProduct)) {
-        allergyInd = true
-      }
-      break
+  waitroseApi.getProduct(product[0]).then(productData => {
+    const allergens = productData.products[0].allergens
+    const allergyMap = {
+      gluten: 'suitableForThoseAvoidingGluten',
+      milk: 'suitableForThoseAvoidingMilk',
+      eggs: 'suitableForThoseAvoidingEgg',
+      nuts: 'suitableForThoseAvoidingNuts',
+      soya: 'suitableForThoseAvoidingSoya',
+      meat: 'suitableForVegetarians',
+      'meat products': 'suitableForVegans',
     }
-  }
-  //console.log('city: ' + product);
-  //console.log('Date: ' + date);
 
-  if (allergyInd) {
-    response =
-      'It seems you have an allergy to ' +
-      tmpProduct +
-      '!. Would you like to see some alternative products?'
-  } else {
-    response = 'Okay..This product has been added to the trolley'
-  }
-  //Default response from the webhook to show it's working
+    if (allergyMap.keys.includes(userAllergy) && !allergens[allergyMap[userAllergy]]) {
+      return sendResponse(`${product[0]} contains ${userAllergy} would you like to hear about an alternative product?`)
+    }
 
-  res.setHeader('Content-Type', 'application/json') //Requires application/json MIME type
-  res.send(
-    JSON.stringify({
-      speech: response,
-      displayText: response,
-      //"speech" is the spoken version of the response, "displayText" is the visual version
-    }),
-  )
+    return sendResponse(`Okay ${product[0]} has been added to your trolley TEST`)
+  })
 }
 
 function saveallergyindicator(req, res) {
-  userallergy = req.body.result.parameters['allergy']
+  userAllergy = req.body.result.parameters['allergy']
 
-  if (undefined != userallergy && userallergy.length > 0) {
+  if (userAllergy && userAllergy.length > 0) {
     response = 'Okay...We will keep you safe.'
   } else {
     response = 'Okay..Looks like you have not got any allergy.'
@@ -76,7 +72,7 @@ function saveallergyindicator(req, res) {
 }
 
 function resetindicator(req, res) {
-  let userallergy = ''
+  let userAllergy = ''
 
   response = 'Okay..I have deleted all your allergies information.'
 
