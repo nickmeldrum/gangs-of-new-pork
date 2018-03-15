@@ -1,18 +1,26 @@
 {
   "actions": [
     {
-      "description": "Default Welcome Intent",
       "name": "MAIN",
-      "fulfillment": {
-        "conversationName": "Waitrose"
-      },
       "intent": {
-        "name": "actions.intent.MAIN",
+        "name": "actions.intent.MAIN"
+      },
+      "fulfillment": {
+        "conversationName": "waitroseApp"
+      }
+    },
+    {
+      "name": "BUY",
+      "intent": {
+        "name": "com.example.sekai.BUY",
         "trigger": {
-          "queryPatterns": [
-            "talk to <INSERT YOUR NAME HERE>"
+          "query_patterns": [
+            {"query_pattern": "does pesto contain gluten"}
           ]
         }
+      },
+      "fulfillment": {
+        "conversationName": "waitroseApp"
       }
     }
   ],
