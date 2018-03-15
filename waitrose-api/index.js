@@ -6,6 +6,9 @@ const token = require('./token')
 const trolley = require('./trolley')
 const login = require('./login')
 const config = require('./config')
+const searchFiltered = require('./searchFiltered')
+const emptyTrolley = require('./emptyTrolley')
+
 
 let tokenObject = {}
 
@@ -25,4 +28,6 @@ module.exports = {
   login,
   config,
   getProduct,
+  searchFiltered,
+  emptyTrolley,
 }
