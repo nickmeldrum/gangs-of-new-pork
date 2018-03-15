@@ -9,9 +9,17 @@ if (process.argv[3] && process.argv[3].toLowerCase().trim() === 'debug') {
 const searchTerm = process.argv[2]
 
 waitroseApi
-  .login()
-  .then(waitroseApi.token)
-  .then(waitroseApi.search.bind(null, 'bread'))
+  .token()
+// .login()
+// .then(waitroseApi.token)
+  /*
+  .then(data => {
+    return waitroseApi.trolley(data.loginResult.orderId, '003011-1108-1109')
+  })
+  */
+  .then(data => {
+    return waitroseApi.search(data.loginResult.customerId, data.loginResult.orderId, 'bread')
+  })
   /*
   .then(response => {
     console.log('SEARCH RESPONSE', response)

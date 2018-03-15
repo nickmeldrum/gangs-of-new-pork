@@ -4,11 +4,11 @@ const api = require('./api-call')
 
 module.exports = () =>
   api.call({
-    path: '/api/authentication-prod/v2/authentication/login',
+    path: '/authentication-prod/v2/authentication/login',
     method: 'POST',
     saveCookies: true,
     body: {
-      email: 'test@nickmeldrum.com',
-      password: 'Password1',
+      email: 'manikandan.ramanathan501@waitrose.co.uk',
+      password: 'periscope01',
     },
   })

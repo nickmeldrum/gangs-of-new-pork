@@ -17,7 +17,7 @@ exports.storeToken = token => (jwt = token)
 exports.call = options => {
   log('making call', options.path)
   const opts = {
-    host: 'www.waitrose.com',
+    host: 'api.ecom.waitrose.com',
     path: options.path,
     method: options.method,
     headers: {
@@ -30,14 +30,12 @@ exports.call = options => {
     opts.headers['Content-Length'] = Buffer.byteLength(options.bodyString)
   }
 
-  log('NICK', cookieHeader, options)
   if (options.sendCookies && cookieHeader) {
     opts.headers['Cookie'] = cookieHeader
   }
 
   if (jwt) {
-    log('auth added', jwt)
-    opts.headers['Authorisation'] = jwt
+    opts.headers['authorisation'] = jwt
   }
 
   return new Promise((resolve, reject) => {
@@ -57,7 +55,7 @@ exports.call = options => {
         body += this.read() || ''
       })
       res.on('end', () => {
-        log('request complete:', res.statusCode, body)
+        log('request complete:', res.statusCode, body, res)
         if (res.statusCode > 399) reject(res.statusCode)
         else {
           if (body.length) resolve(JSON.parse(body))
@@ -66,8 +64,6 @@ exports.call = options => {
       })
     })
 
-    log(req)
-
     req.on('error', e => {
       log('ack request error', e)
       reject(e)
@@ -75,7 +71,12 @@ exports.call = options => {
 
     if (options.body) {
       req.write(options.bodyString)
+
+      log('NICK body', options.bodyString)
+      log('NICK REQ', req)
     }
+
+
     req.end()
   })
 }
