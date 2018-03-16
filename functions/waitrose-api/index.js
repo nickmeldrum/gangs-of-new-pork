@@ -35,6 +35,18 @@ const addToTrolley = productId => login()
     return trolley(data.loginResult.orderId, productId)
   })
 
+const addToTrolley2 = searchTerm => login()
+  .then(token)
+  .then(data => {
+    tokenObject = data.loginResult
+    return data
+  })
+  .then(data => {
+    return search(tokenObject.customerId, tokenObject.orderId, searchTerm)
+  })
+  .then(data => product(tokenObject.customerId, tokenObject.orderId, data.componentsAndProducts[0].searchProduct.id))
+  .then(data => trolley(tokenObject.orderId, data.products[0].id))
+
 module.exports = {
   product,
   search,
@@ -46,5 +58,6 @@ module.exports = {
   searchFiltered,
   emptyTrolley,
   getAllergyFreeProduct,
-  addToTrolley
+  addToTrolley,
+  addToTrolley2,
 }

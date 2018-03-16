@@ -17,44 +17,41 @@ let userAllergy = '';
 exports.team3hackathon = functions.https.onRequest((request, response) => {
   const app = new App({request, response});
 
+  function ask(app, message) {
+    app.ask({
+      speech: message,
+      displayText: message,
+    });
+  }
+
+  function tell(app, message) {
+    app.tell({
+      speech: message,
+      displayText: message,
+    });
+  }
+
   function saveAllergy(app) {
+    const appAsk = ask.bind(null, app)
     userAllergy = app.getArgument(ALLERGY_ARGUMENT);
 
     if (userAllergy && userAllergy.length > 0) {
-      return app.tell('Okay...We will keep you safe.');
+      return appAsk('Okay we will keep you safe, what would you like to buy?');
     } else {
-      return app.tell('Okay..Looks like you have not got any allergy.')
+      return appAsk('Okay it looks like you have not got an allergy, what would you like to buy?')
     }
   }
 
   function addToTrolley(app) {
+    const appAsk = ask.bind(null, app)
+    const appTell = tell.bind(null, app)
     let product = app.getArgument(PRODUCT_ARGUMENT);
 
-    if (!product) return app.tell('Sorry, what product?')
-    if (product.length > 1) return app.tell('Sorry we can only deal with 1 product right now')
-    if (!userAllergy) return app.tell('Sorry, we do not know your allergy information yet')
+    if (!product) return appAsk('Sorry, what product?')
+    if (product.length > 1) return appAsk('Sorry we can only deal with 1 product right now')
+    if (!userAllergy) return appAsk('Sorry, we do not know your allergy information yet')
 
-    return waitroseApi.getProduct(product[0]).then(productData => {
-      const allergens = productData.products[0].allergens
-      const allergyMap = {
-        gluten: 'suitableForThoseAvoidingGluten',
-        milk: 'suitableForThoseAvoidingMilk',
-        eggs: 'suitableForThoseAvoidingEgg',
-        nuts: 'suitableForThoseAvoidingNuts',
-        soya: 'suitableForThoseAvoidingSoya',
-        meat: 'suitableForVegetarians',
-        'meat products': 'suitableForVegans',
-      }
-
-      if (allergyMap.keys.includes(userAllergy) && !allergens[allergyMap[userAllergy]]) {
-        return app.tell(`${product[0]} contains ${userAllergy} would you like to hear about an alternative product?`)
-      }
-
-      return app.tell(`Okay ${product[0]} has been added to your trolley TEST`)
-    }).catch(err => {
-      console.error(err)
-      throw err
-    })
+    return appAsk(`we've added ${product} to your trolley, well done!`);
   }
 
   let actionMap = new Map();
